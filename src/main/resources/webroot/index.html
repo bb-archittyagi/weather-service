@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Weather Service</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+  <h1>🌦 Weather Service</h1>
+  <p class="tagline">Live weather using Vert.x & OpenWeather</p>
+
+  <div class="box">
+    <h3>Search by City</h3>
+    <input id="cityInput" placeholder="Enter city name" />
+    <div class="btn-row">
+      <button onclick="fetchWeatherByCity()">Fetch Live</button>
+      <button class="ghost" onclick="searchWeather()">Search Saved</button>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3>Search by Coordinates</h3>
+    <div class="grid">
+      <input id="latInput" placeholder="Latitude (28.6139)" />
+      <input id="lonInput" placeholder="Longitude (77.2090)" />
+    </div>
+    <button onclick="fetchWeatherByLatLon()">Fetch by Lat/Lon</button>
+  </div>
+
+  <div id="result" class="result hidden"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
