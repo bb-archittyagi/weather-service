@@ -1,31 +1,80 @@
-= Weather-service
+= Weather Service (Vert.x)
+:toc:
+:toclevels: 2
 
-image:https://img.shields.io/badge/vert.x-4.5.24-purple.svg[link="https://vertx.io"]
+A reactive backend weather service built using *Java* and *Vert.x*, designed to fetch real-time weather data from an external API, process it asynchronously, and store it in a *MySQL* database.  
+The application exposes RESTful APIs and follows a clean, layered architecture suitable for scalable microservices.
 
-This application was generated using http://start.vertx.io
+== ✨ Features
+* Non-blocking, reactive architecture using Vert.x
+* RESTful APIs for weather data access
+* External weather API integration
+* Persistent storage using MySQL
+* Clean separation of Router, Service, DAO, and Config layers
+* Gradle-based build system
 
-== Building
+== 🛠 Tech Stack
+* Java 11
+* Vert.x 4.x
+* MySQL
+* Gradle
+* HTML, CSS, JavaScript (basic frontend)
 
-To launch your tests:
-```
-./gradlew clean test
-```
+== 📁 Project Structure
+[source]
+----
+src/main/java/com/bb/weather/weather_service
+├── MainVerticle.java
+├── config
+│   └── DbConfig.java
+├── dao
+│   └── WeatherDao.java
+├── router
+│   ├── HealthRouter.java
+│   └── WeatherRouter.java
+└── service
+    └── WeatherService.java
+----
 
-To package your application:
-```
-./gradlew clean assemble
-```
+== 🚀 Running the Application
 
-To run your application:
-```
+=== Prerequisites
+* Java 11+
+* MySQL running locally
+* Gradle (wrapper included)
+
+=== Build & Run
+[source,bash]
+----
 ./gradlew clean run
-```
+----
 
-== Help
+=== Run Tests
+[source,bash]
+----
+./gradlew clean test
+----
 
-* https://vertx.io/docs/[Vert.x Documentation]
-* https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
-* https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
-* https://discord.gg/6ry7aqPWXy[Vert.x Discord]
+== 🧪 API Endpoints (Example)
+* `GET /health` – Service health check
+* `GET /weather` – Fetch stored weather data
+* `POST /weather` – Fetch and store weather data from external API
 
+== 📌 Learning Outcomes
+* Hands-on experience with reactive programming
+* Understanding of non-blocking I/O in backend services
+* REST API design using Vert.x Web
+* Database interaction using async SQL clients
 
+== 🔮 Future Enhancements
+* Authentication & authorization
+* Caching using Redis
+* Dockerization
+* Deployment on cloud platforms (AWS / GCP)
+
+== 📚 References
+* https://vertx.io/docs/
+* https://start.vertx.io/
+
+---
+Developed by *Archit Tyagi*
