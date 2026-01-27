@@ -2,8 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 
 plugins {
-  java
-  application
+  id("java")
+  id("application")
   id("com.gradleup.shadow") version "9.2.2"
 }
 
@@ -35,6 +35,11 @@ dependencies {
   implementation("io.vertx:vertx-web-client")
   implementation("io.vertx:vertx-sql-client")
   implementation("io.vertx:vertx-mysql-client")
+  implementation("com.google.dagger:dagger:2.50")
+  annotationProcessor("com.google.dagger:dagger-compiler:2.50")
+  implementation("javax.inject:javax.inject:1")
+  implementation("org.slf4j:slf4j-api:2.0.9")
+  implementation("ch.qos.logback:logback-classic:1.4.11")
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")

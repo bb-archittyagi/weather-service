@@ -1,34 +1,42 @@
-const API = "http://localhost:8080";
+// Backend base URL (UPDATED PORT)
+const API = "http://localhost:8070";
+
+// DOM elements
+const cityInput = document.getElementById("cityInput");
+const latInput = document.getElementById("latInput");
+const lonInput = document.getElementById("lonInput");
+const result = document.getElementById("result");
 
 function fetchWeatherByCity() {
-  const city = cityInput.value;
-  if (!city) return alert("Enter city");
+  const city = cityInput.value.trim();
+  if (!city) return alert("Enter city name");
 
-  fetch(`${API}/api/weather?city=${city}`)
+  fetch(`${API}/api/weather?city=${encodeURIComponent(city)}`)
     .then(r => r.ok ? r.json() : r.text().then(t => Promise.reject(t)))
     .then(show)
-    .catch(err => showError(err));
+    .catch(showError);
 }
 
 function searchWeather() {
-  const city = cityInput.value;
-  if (!city) return alert("Enter city");
+  const city = cityInput.value.trim();
+  if (!city) return alert("Enter city name");
 
-  fetch(`${API}/api/weather/search?city=${city}`)
+  fetch(`${API}/api/weather/search?city=${encodeURIComponent(city)}`)
     .then(r => r.ok ? r.json() : r.text().then(t => Promise.reject(t)))
     .then(show)
-    .catch(err => showError(err));
+    .catch(showError);
 }
 
 function fetchWeatherByLatLon() {
-  const lat = latInput.value;
-  const lon = lonInput.value;
-  if (!lat || !lon) return alert("Enter lat & lon");
+  const lat = latInput.value.trim();
+  const lon = lonInput.value.trim();
+
+  if (!lat || !lon) return alert("Enter latitude & longitude");
 
   fetch(`${API}/api/weather/geo?lat=${lat}&lon=${lon}`)
     .then(r => r.ok ? r.json() : r.text().then(t => Promise.reject(t)))
     .then(show)
-    .catch(err => showError(err));
+    .catch(showError);
 }
 
 function show(data) {
