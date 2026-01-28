@@ -2,11 +2,11 @@ package com.bb.weather.weather_service;
 
 import com.bb.weather.weather_service.config.DbConfig;
 import com.bb.weather.weather_service.controller.http.WeatherController;
-import com.bb.weather.weather_service.dao.WeatherDao;
-import com.bb.weather.weather_service.dao.WeatherDaoImpl;
-import com.bb.weather.weather_service.handler.WeatherHandler;
-import com.bb.weather.weather_service.service.WeatherService;
-import com.bb.weather.weather_service.service.WeatherServiceImpl;
+import com.bb.weather.weather_service.di.AppComponent;
+import com.bb.weather.weather_service.di.AppModule;
+import com.bb.weather.weather_service.di.DaggerAppComponent;
+import com.bb.weather.weather_service.controller.http.WeatherController;
+
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -33,32 +33,25 @@ public class MainVerticle extends AbstractVerticle {
     router.route("/api/*").handler(BodyHandler.create());
 
 
-    // ---- MANUAL DI (Dagger-ready) ----
-    WeatherDao weatherDao =
-      new WeatherDaoImpl(DbConfig.getClient(vertx));
-
-    WeatherService weatherService =
-      new WeatherServiceImpl(vertx);
-
-    WeatherHandler weatherHandler =
-      new WeatherHandler(weatherService);
+    AppComponent component =
+      DaggerAppComponent.builder()
+        .appModule(new AppModule(vertx))
+        .build();
 
     WeatherController weatherController =
-      new WeatherController(weatherHandler);
+      component.weatherController();
 
-    // Register controllers
     weatherController.register(router);
-    // Start server
+
     vertx.createHttpServer()
       .requestHandler(router)
-      .listen(8070, http -> {
-        if (http.succeeded()) {
-          LOGGER.info("HTTP server started on port 8070");
+      .listen(8070, ar -> {
+        if (ar.succeeded()) {
           startPromise.complete();
         } else {
-          LOGGER.error("Failed to start HTTP server", http.cause());
-          startPromise.fail(http.cause());
+          startPromise.fail(ar.cause());
         }
       });
+
   }
 }

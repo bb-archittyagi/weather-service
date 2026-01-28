@@ -4,13 +4,12 @@ import io.vertx.core.Vertx;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClient;
+import javax.inject.Inject;
 import com.bb.weather.weather_service.dao.WeatherDaoImpl;
-
-
-import com.bb.weather.weather_service.config.DbConfig;
 import com.bb.weather.weather_service.dao.WeatherDao;
-
 import io.vertx.mysqlclient.MySQLPool;
+import com.bb.weather.weather_service.config.DbConfig;
+
 
 public class WeatherServiceImpl implements WeatherService {
 
@@ -19,10 +18,10 @@ public class WeatherServiceImpl implements WeatherService {
 
   private static final String API_KEY = "61cf1dd1249a8b953c0957bdd359f6bc";
 
-  public WeatherServiceImpl(Vertx vertx) {
-    this.webClient = WebClient.create(vertx);
-    MySQLPool client = DbConfig.getClient(vertx);
-    this.weatherDao = new WeatherDaoImpl(client);
+  @Inject
+  public WeatherServiceImpl(WebClient webClient, WeatherDao weatherDao) {
+    this.webClient = webClient;
+    this.weatherDao = weatherDao;
   }
 
   @Override

@@ -2,6 +2,7 @@ package com.bb.weather.weather_service.controller.http;
 
 import com.bb.weather.weather_service.handler.WeatherHandler;
 import io.vertx.ext.web.Router;
+import javax.inject.Inject;
 
 /**
  * WeatherController
@@ -11,10 +12,10 @@ public class WeatherController {
 
   private final WeatherHandler weatherHandler;
 
+  @Inject
   public WeatherController(WeatherHandler weatherHandler) {
     this.weatherHandler = weatherHandler;
   }
-
   public void register(Router router) {
 
     router.get("/api/weather")

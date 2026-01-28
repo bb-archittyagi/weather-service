@@ -4,6 +4,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.Tuple;
+import javax.inject.Inject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
@@ -19,6 +20,7 @@ public class WeatherDaoImpl implements WeatherDao {
 
   private final MySQLPool client;
 
+  @Inject
   public WeatherDaoImpl(MySQLPool client) {
     this.client = client;
   }

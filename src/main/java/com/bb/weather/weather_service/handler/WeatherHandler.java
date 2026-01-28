@@ -5,6 +5,7 @@ import com.bb.weather.weather_service.service.WeatherService;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import javax.inject.Inject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class WeatherHandler {
 
   private final WeatherService weatherService;
 
+  @Inject
   public WeatherHandler(WeatherService weatherService) {
     this.weatherService = weatherService;
   }
