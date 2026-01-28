@@ -2,46 +2,79 @@
 :toc:
 :toclevels: 2
 
-A reactive backend weather service built using *Java* and *Vert.x*, designed to fetch real-time weather data from an external API, process it asynchronously, and store it in a *MySQL* database.  
-The application exposes RESTful APIs and follows a clean, layered architecture suitable for scalable microservices.
+A reactive backend *Weather Service* built using *Java* and *Vert.x*, designed to fetch real-time weather data from an external API, process it asynchronously, and persist it in a *MySQL* database.
 
-== ✨ Features
-* Non-blocking, reactive architecture using Vert.x
-* RESTful APIs for weather data access
-* External weather API integration
-* Persistent storage using MySQL
-* Clean separation of Router, Service, DAO, and Config layers
-* Gradle-based build system
+The project follows a *clean, layered architecture* with proper *Dependency Injection using Dagger*, making it modular, testable, and scalable — suitable for real-world backend and microservice use cases.
+
+== ✨ Key Features
+* Fully non-blocking, reactive architecture using Vert.x
+* RESTful APIs for fetching, searching, and updating weather data
+* Integration with external weather API (OpenWeather)
+* Asynchronous persistence using Vert.x MySQL client
+* Clean separation of concerns:
+** Controller
+** Handler
+** Service
+** DAO
+** Configuration
+* Dependency Injection using *Dagger 2*
+* Gradle-based build and run setup
+* Simple static frontend (HTML/CSS/JS)
 
 == 🛠 Tech Stack
 * Java 11
 * Vert.x 4.x
+* Dagger 2 (Dependency Injection)
 * MySQL
 * Gradle
-* HTML, CSS, JavaScript (basic frontend)
+* HTML, CSS, JavaScript
 
 == 📁 Project Structure
 [source]
 ----
 src/main/java/com/bb/weather/weather_service
-├── MainVerticle.java
+├── MainVerticle.java          # Application entry point
 ├── config
-│   └── DbConfig.java
+│   └── DbConfig.java          # MySQL configuration
+├── controller
+│   └── http
+│       └── WeatherController.java
+├── handler
+│   └── WeatherHandler.java    # HTTP request handling
+├── service
+│   ├── WeatherService.java
+│   └── WeatherServiceImpl.java
 ├── dao
-│   └── WeatherDao.java
-├── router
-│   ├── HealthRouter.java
-│   └── WeatherRouter.java
-└── service
-    └── WeatherService.java
+│   ├── WeatherDao.java
+│   └── WeatherDaoImpl.java
+├── di
+│   ├── AppComponent.java      # Dagger component
+│   ├── AppModule.java         # Infrastructure providers
+│   └── ServiceModule.java     # Interface bindings
+└── model
+    └── Weather.java
 ----
+
+== 🔄 Request Flow (High-Level)
+
+1. HTTP request hits *WeatherController*
+2. Controller delegates to *WeatherHandler*
+3. Handler invokes *WeatherService*
+4. Service:
+* Calls external Weather API (async)
+* Decides whether to insert or update DB
+5. DAO interacts with MySQL asynchronously
+6. JSON response returned to client
+
+All dependencies are injected using *Dagger*, no manual object creation.
 
 == 🚀 Running the Application
 
 === Prerequisites
 * Java 11+
 * MySQL running locally
-* Gradle (wrapper included)
+* Database schema created
+* Gradle wrapper included
 
 === Build & Run
 [source,bash]
@@ -49,32 +82,49 @@ src/main/java/com/bb/weather/weather_service
 ./gradlew clean run
 ----
 
-=== Run Tests
-[source,bash]
+The server starts on:
 ----
-./gradlew clean test
+http://localhost:8070
 ----
 
-== 🧪 API Endpoints (Example)
-* `GET /health` – Service health check
-* `GET /weather` – Fetch stored weather data
-* `POST /weather` – Fetch and store weather data from external API
+== 🧪 API Endpoints (Examples)
+
+* `GET /api/weather?city=London`
+* `GET /api/weather/geo?lat=28.61&lon=77.20`
+* `GET /api/weather/search?city=Delhi`
+* `PUT /api/weather`
+
+== 🧠 Dependency Injection (Dagger)
+
+The project uses *constructor-based dependency injection* with Dagger:
+
+* `@Inject` used on constructors
+* `@Module` for providing external dependencies (Vertx, WebClient, MySQLPool)
+* `@Binds` for interface-to-implementation mapping
+* Centralized object graph via `AppComponent`
+
+This removes tight coupling and improves testability.
 
 == 📌 Learning Outcomes
-* Hands-on experience with reactive programming
-* Understanding of non-blocking I/O in backend services
-* REST API design using Vert.x Web
-* Database interaction using async SQL clients
+* Practical understanding of reactive programming
+* Non-blocking I/O with Vert.x Web and SQL clients
+* Clean architecture design in backend services
+* Dependency Injection using Dagger
+* Real-world async request handling patterns
+* Gradle-based project structuring
 
 == 🔮 Future Enhancements
-* Authentication & authorization
-* Caching using Redis
-* Dockerization
-* Deployment on cloud platforms (AWS / GCP)
+* API authentication & authorization
+* Redis caching for frequent queries
+* Docker & Docker Compose setup
+* Cloud deployment (AWS / GCP)
+* Unit and integration testing with mocks
 
 == 📚 References
 * https://vertx.io/docs/
+* https://dagger.dev/
 * https://start.vertx.io/
+* https://openweathermap.org/api
 
 ---
 Developed by *Archit Tyagi*
